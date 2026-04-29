@@ -1,6 +1,6 @@
 <x-layouts.admin title="Dashboard - Alderton">
     {{-- @section acts as a place holder for my <header><h2></h2></header> in admin.blade--}}
-    @section('page-title', 'Dashboard')
+    <x-slot:pageTitle>Dashboard</x-slot:pageTitle>
     <p class="px-3 py-3 font-serif">Welcome, {{ Auth::guard('admin')->user()->name }}</p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {{-- Stats card --}}

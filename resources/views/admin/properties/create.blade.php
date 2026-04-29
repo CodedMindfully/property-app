@@ -1,4 +1,5 @@
 <x-layouts.admin title="Create Properties">
+        <x-slot:pageTitle>Create Property</x-slot:pageTitle>
     
     <div class="min-h-screen bg-gray-50 px-5 py-12 flex justify-center font-serif">
         <div class="w-full max-w-4xl">
@@ -109,14 +110,6 @@
                                     text-alderton-dark focus:bg-white focus:ring-2 focus:ring-alderton-gold 
                                     focus:border-alderton-gold outline-none transition-all cursor-pointer"
                             >
-                                {{-- <option value="" disabled selected>Select Type</option>
-                                <option value="detached">Detached</option>
-                                <option value="semi-detached">Semi-Detached</option>
-                                <option value="terraced">Terraced</option>
-                                <option value="flat">Flat</option>
-                                <option value="bungalow">Bungalow</option>
-                                <option value="duplex">Duplex</option>
-                                <option value="penthouse">Penthouse</option> --}}
                                 <option value="">Select Property Type</option>
                                 @foreach ($propertyTypes as $type )
                                     <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -263,20 +256,3 @@
     </div>
     
 </x-layouts.admin>
-
-{{-- 
-Title input
-Price input
-Location input
-Status dropdown (available, sold, reserved, off-plan)
-Property type dropdown (from $propertyTypes)
-Description textarea
-Bedrooms input
-Bathrooms input
-Floor size input
-Is joint venture checkbox
-Completion date input
-Brochure PDF upload
-Images upload (multiple)
-Features (dynamic inputs with plus button)
-Submit button --}}

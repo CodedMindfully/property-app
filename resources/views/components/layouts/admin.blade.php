@@ -85,7 +85,7 @@
             <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center">
                 <h2 class="text-lg font-semibold text-gray-700">
                     {{-- Dynamically set each page header title. Dashboard is default --}}
-                    @yield('page-title', 'Dashboard')
+                    {{ $pageTitle ?? 'Dashboard' }}
                 </h2>
                 <span class="text-sm text-gray-400">
                     {{ date('l, d F Y') }}
