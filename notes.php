@@ -88,3 +88,131 @@ don't want to write out the full function (){ return } syntax
 
 8. HTML is sent back to your browser
 8. HTML is sent back to your browser
+
+
+
+
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\PropertyType;
+use App\Models\Property;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
+class AdminPropertyController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+        $properties = Property::whereNull('deleted_at')
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+        return view('admin.properties.index', compact('properties'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //Fetch all property types for the dropdown
+        $propertyTypes = PropertyType::all();
+
+        // Pass the statuses constant to the view 
+        $statuses = Property::STATUSES;
+
+        return view('admin.properties.create', compact('propertyTypes', 'statuses'));
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //Specify validation rule as array 
+       $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'location' => ['required', 'string', 'max:255'],
+            'status'    => ['required', 'string'],
+            /*points to table: property_types , column: id
+            'exists:property_types, id' = go inside property types table
+            id = make sure the number the user sent corresponds to a real record
+            exist rule catches it when a someone tries to submit a ramdon id like 999
+            that doesn't exist in db
+            */
+            'property_types'  => ['required', 'exists:property_types, id'], 
+            'description'   => ['string', 'nullable'], //Should I remove 'required incase admin doesn't have description yet?
+            'bedrooms'  => ['required', 'integer', 'min:0'],
+            'bathrooms'  => ['required', 'integer', 'min:0'],
+            'floor_size'  => ['required', 'integer', 'min:0'],
+            'is_joint_venture'  => ['boolean', 'nullable'],
+            'completion_date'   => ['nullable', 'date'],
+
+            //Validate the array of images. This field can be empty
+            'images'    => ['nullable', 'array'],
+             /* 'images.*' = the * is a wildcard. It tells Laravel to loop through everry
+            single item inside the images array and apply these rules to each one individually
+            .* looks at individual images rather than looking at the group as a whole.  
+            */
+            'images.*' => ['image', 'mimes:jpg,png,jpeg,webp', 'max:2048'],
+            //Validate pdf
+            'brochure'  => ['nullable', 'mimes:pdf', 'max:1000'], //10000kb = 10mb
+            'features'  => ['required', 'array'],
+            'features.*' => ['string', 'max:255']
+        ]);
+
+
+        // Get current authenticated user's id
+        //to save this record in the properties table
+        $userId = Auth::guard('admin')->user()->id();
+
+    
+
+        // Save pdf and store path
+        // If brochure was uploaded
+        if($request->hasFile('brochure')){
+            // Store it in brochures folder on the public disk 
+            $path = $request->file('brochure')->store('brochures', 'public');
+        }
+
+        // Process image and store path in filesyste and process entries for db
+        if($request->hasFile('images')){
+            $files = $request->file('images');
+            // loop through the images to set primary image 
+            foreach($files as $index => $image){
+                // Store each image individually inside the loop
+                $path = $image->store('properties', 'public');
+                // determine if this is the primary image
+                //If index is 0, it means this is the first image in the list
+                $isPrimary = ($index === 0);
+            }
+        }
+        
+
+        // Property features 
+        foreach($request->features as $featureName){
+            if(!empty($featureName)){
+                $property->features()->create([
+                    'feature' => $featureName
+                ]);
+            }
+        }
+
+        // $validated = $request->validate
+
+
+        // redirect if successful
+        return redirect('admin.properties.index');
+
+    }
+
+}
