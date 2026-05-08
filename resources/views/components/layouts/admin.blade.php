@@ -84,7 +84,7 @@
         <div class="flex-1 flex flex-col">
             {{-- Top bar --}}
             <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center">
-                <h2 class="text-lg font-semibold text-gray-700">
+                <h2 class="text-lg font-semibold text-gray-700 font-serif">
                     {{-- Dynamically set each page header title. Dashboard is default --}}
                     {{ $pageTitle ?? 'Dashboard' }}
                 </h2>

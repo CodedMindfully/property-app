@@ -1,6 +1,15 @@
 <x-layouts.admin title="Create Properties">
-        <x-slot:pageTitle>Create Property</x-slot:pageTitle>
-    
+    <x-slot:pageTitle>Create Property</x-slot:pageTitle>
+    <div class="flex items-center justify-between mb-8 px-12 pt-5">
+            <a href="{{ route('admin.properties.index') }}" class="text-alderton-dark hover:text-alderton-gold transition-colors
+                                    flex items-center gap-2 text-sm font-semibold uppercase tracking-widest">
+                                    {{-- back arrow Icon --}}
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to Portfolio
+            </a>
+    </div>
     <div class="min-h-screen bg-gray-50 px-5 py-12 flex justify-center font-serif">
         <div class="w-full max-w-4xl">
             {{-- shadow-lg gives the form depth, while border-gray-100 keeps the edges crisp --}}
@@ -14,18 +23,6 @@
                     </h2>
                     <p class="text-sm text-gray-500">Enter the form below to store a new property.</p>
                 </div>
-                 {{-- Check if there are any errors in the form --}}
-            @if ($errors->any())
-                <div>
-                    <ul class="text-red">
-                        {{-- Loop through all errors and display them --}}
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                
-            @endif
                 {{-- Form body --}}
                 <div class="p-8 space-y-6">
                     {{-- Property title --}}

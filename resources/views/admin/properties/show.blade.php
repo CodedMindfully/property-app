@@ -3,10 +3,9 @@
     <x-slot:pageTitle>Property</x-slot:pageTitle> 
     <div class="min-h-screen bg-alderton-light px-5 py-12 flex justify-center font-serif">
         <div class="w-full max-w-5xl">
-
             {{-- Navigation / Top bar --}}
-            <div class="flex items-center justify-between mb:8">
-                <a href="#" class="text-alderton-dark hover:text-alderton-gold transition-colors
+            <div class="flex items-center justify-between mb-8">
+                <a href="{{ route('admin.properties.index') }}" class="text-alderton-dark hover:text-alderton-gold transition-colors
                                     flex items-center gap-2 text-sm font-semibold uppercase tracking-widest">
                                     {{-- back arrow Icon --}}
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -26,11 +25,14 @@
                 {{-- Hero Image Placeholder section --}}
                 <div class="relative h-96 bg-gray-200">
                     <div class="absolute inset-0 flex items-center justify-center text-gray-400">
-                        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        @if ($property->images->first())
+                            <img src="{{ asset('storage/' . $property->images->first()->image_path)}}" class="w-full h-full object-cover">
+                        @else
+                            <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                     d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        <img src="">
+                             </svg>
+                        @endif
                     </div>
                     {{-- Status badge --}}
                     <div class="absolute top-6 left-6">
@@ -77,7 +79,10 @@
                             </div>
                             <div class="text-center md:text-left">
                                 <span class="block text-xs uppercase tracking-widest text-gray-400 font-bold mb-2">Property Type</span>
-                                <span class="text-2xl font-semibold text-alderton-dark">{{ $property->propertyType->name }}</span>
+                                {{-- Prevent Laravel from throwing error on properties without property types
+                                using $property->propertyType?->name Nullsafe Operator (?->) 
+                                It tells Laravel if the thing on the left is null, just stop and return nothing. Don't crash--}}
+                                <span class="text-2xl font-semibold text-alderton-dark">{{ $property->propertyType?->name }}</span>
                             </div>
                         </div>
                         {{-- Description section --}}

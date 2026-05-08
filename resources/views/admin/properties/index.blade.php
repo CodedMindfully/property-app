@@ -1,11 +1,11 @@
 <x-layouts.admin title="Admin Properties - Alderton">
     <x-slot:pageTitle>Properties</x-slot:pageTitle>
     {{-- Display success message if property upload was successful on create property page --}}
-    @if (session('success'))
-        <div class="text-green">
+    {{-- @if (session('success'))
+        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4">
                 <p>{{ session('success') }}</p>
         </div>
-    @endif
+    @endif --}}
 
     <div class="min-h-screen bg-gray-50 px-5 py-12 flex justify-center font-serif">
         <div class="w-full max-w-6xl">
@@ -42,8 +42,8 @@
                                 <td class="px-6 py-5">
                                     <span class="font-semibold text-alderton-dark block">{{ $property->title }}</span>
                                 </td>
-                                <td class="px-6 py-5 text-gray-600">{{ $property->location }}</td>
                                 <td class="px-6 py-5 font-medium text-alderton-dark">{{ $property->formatted_price }}</td>
+                                <td class="px-6 py-5 text-gray-600">{{ $property->location }}</td>
                                 <td class="px-6 py-5">
                                     <span class="px-3 py-1 rounded-full text-xs font-medium bg-alderton-light
                                                 text-alderton-gold border border-alderton-gold/20">{{ ucfirst($property->status) }}</span>
@@ -62,10 +62,12 @@
                                     </a>
                                     {{-- Edit --}}
                                     <a href="{{ route('admin.properties.edit', $property->id) }}"
-                                        class="inline-block text-gray-400 hover:text-alderton-gold transition-colors" title="Edit"></a>
+                                        class="inline-block text-gray-400 hover:text-alderton-gold transition-colors" title="Edit">
                                         {{-- Edit icon --}}
                                         <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                    </a>
                                     {{-- Delete --}}
                                     <form action="{{ route('admin.properties.destroy', $property->id) }}" method="POST" class="inline-block">
                                         @csrf
@@ -85,6 +87,13 @@
                     </table>
                 </div>
             </div>
+             {{-- Pagination links. Display 15 properties on each page --}}
+            <div class="px-6 py-4 border-t border-gray-100">
+                {{ $properties->links() }}
+                <p>Hello World</p>
+            </div>
         </div>
+       
     </div>
+    
 </x-layouts.admin>

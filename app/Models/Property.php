@@ -42,7 +42,6 @@ class Property extends Model
     ];
 
     // Define the relationship, a property belongs to an admin
-
     public function admin(){
         return $this->belongsTo(Admin::class);
     }
@@ -56,6 +55,7 @@ class Property extends Model
         return $this->belongsTo(PropertyType::class);
     }
 
+    // A property has many features 
     public function features(){
         return $this->hasMany(PropertyFeature::class);
     }

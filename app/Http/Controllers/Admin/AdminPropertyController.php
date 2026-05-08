@@ -16,10 +16,8 @@ class AdminPropertyController extends Controller
      */
     public function index()
     {
-        //
-        $properties = Property::whereNull('deleted_at')
-                                ->orderBy('created_at', 'desc')
-                                ->get();
+        //SoftDeletes automatically exclude deleted records
+        $properties = Property::orderBy('created_at', 'desc')->paginate(15);
         return view('admin.properties.index', compact('properties'));
     }
 
@@ -141,11 +139,12 @@ class AdminPropertyController extends Controller
                 }
             }
 
-            // redirect if successful
-            return redirect()->route('admin.properties.index')
-                            ->with('success', 'Property listed successfully');
 
         });
+
+        // redirect if successful
+        return redirect()->route('admin.properties.index')
+                            ->with('success', 'Property listed successfully');
         
 
     }
@@ -188,4 +187,6 @@ class AdminPropertyController extends Controller
     {
         //
     }
+
+
 }
