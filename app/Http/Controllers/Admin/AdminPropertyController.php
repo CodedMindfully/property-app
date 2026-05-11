@@ -183,9 +183,16 @@ class AdminPropertyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Property $property)
     {
-        //
+        //Perform soft delete
+        $property->delete();
+        // Return to index.blade 
+        // Attach a success message to the session
+        return redirect()
+                ->route('admin.properties.index')
+                ->with('success', 'Property move to trash successfully.');
+
     }
 
 

@@ -7,7 +7,15 @@ export default {
         "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                alderton: {
+                    gold: "#C9A84C",
+                    dark: "#1a1a2e",
+                    light: "#f8f6f0",
+                },
+            },
+        },
     },
     plugins: [],
 };

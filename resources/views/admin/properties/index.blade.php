@@ -69,17 +69,15 @@
                                         </svg>
                                     </a>
                                     {{-- Delete --}}
-                                    <form action="{{ route('admin.properties.destroy', $property->id) }}" method="POST" class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-gray-400 hover:text-red-500 transition-colors" title="Delete">
-                                            {{-- Delete icon --}}
-                                            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                            </svg>
-                                        </button>
-                                    </form>
+                                    <button type="button" 
+                                            onclick="confirmDelete('{{ route('admin.properties.destroy', $property->id) }}')" 
+                                            class="text-gray-400 hover:text-red-500 transition-colors" 
+                                            title="Delete">
+                                        <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
                                 </td>
                             </tr>
                            @endforeach
@@ -90,10 +88,38 @@
              {{-- Pagination links. Display 15 properties on each page --}}
             <div class="px-6 py-4 border-t border-gray-100">
                 {{ $properties->links() }}
-                <p>Hello World</p>
             </div>
         </div>
        
+    </div>
+    {{-- Modal --}}
+    <div id="deleteModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-4">
+            <h3 class="font-serif text-xl text-alderton-dark mb-2"> 
+                Delete Property
+            </h3>
+            <p class="text-gray-500 text-sm mb-6">
+                This property will be soft deleted and can be restored later.
+                Are you sure you want to proceed?
+            </p>
+            <div class="flex gap-3 justify-end">
+                {{-- Cancel btn --}}
+                <button onclick="closeModal()"
+                        class="px-6 py-2 border border-gray-300 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors">
+                    Cancel    
+                </button>
+                {{-- Confirm delete form --}}
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-6 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors">
+                        Yes, Delete
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
     </div>
     
 </x-layouts.admin>
